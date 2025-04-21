@@ -28,6 +28,26 @@ describe("Find Header and Footer elements", () => {
                     .and("not.be.empty");
             });
     });
+    it("should find footer elements", () => {
+        cy.get("footer").should("be.visible");
+
+        cy.get("button")
+            .should("have.length.at.least", 1)
+            .each(($btn) => {
+                cy.wrap($btn)
+                    .should("be.visible")
+                    .and("not.be.disabled");
+            });
+
+        cy.get("a")
+            .should("have.length.at.least", 1)
+            .each(($link) => {
+                cy.wrap($link)
+                    .should("be.visible")
+                    .and("have.attr", "href")
+                    .and("not.be.empty");
+            });
+    })
 });
 
 
