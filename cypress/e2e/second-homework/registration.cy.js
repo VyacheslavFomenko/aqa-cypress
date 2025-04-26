@@ -113,4 +113,15 @@ describe("Check Registration flow", () => {
             lastNameInput().clear();
         });
     });
+
+    context("Email field validation", ()=>{
+        const emailInput = () => cy.get("#signupEmail");
+
+        it("should show error when empty", () => {
+            emailInput().focus().blur();
+            cy.contains("Email required").should("be.visible");
+            emailInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+        });
+
+    });
 });
