@@ -127,12 +127,13 @@ describe("Check Registration flow", () => {
             emailInput().type(`${faker.string.alpha(8)} + @gg`).focus().blur();
             cy.contains("Email is incorrect").should("be.visible");
             emailInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+            emailInput().clear();
         });
 
         it("shouldn't show error when correct email", () => {
             emailInput().type(`${faker.string.alpha(8)} + @gmail.com`).focus().blur();
-            cy.contains("Email is incorrect").should("be.visible");
-            emailInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+            cy.contains("Email is incorrect").should("not.exist");
+            emailInput().clear();
         });
     });
 });
