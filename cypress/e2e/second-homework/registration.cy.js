@@ -117,7 +117,13 @@ describe("Check Registration flow", () => {
     context("Email field validation", ()=>{
         const emailInput = () => cy.get("#signupEmail");
 
-        it("should show error when empty", () => {
+        it("should show error when empty email", () => {
+            emailInput().focus().blur();
+            cy.contains("Email required").should("be.visible");
+            emailInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+        });
+
+        it("should show error when incorrect email", () => {
             emailInput().focus().blur();
             cy.contains("Email required").should("be.visible");
             emailInput().should("have.css", "border-color", "rgb(220, 53, 69)");
