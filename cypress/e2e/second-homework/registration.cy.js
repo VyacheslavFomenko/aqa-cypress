@@ -49,5 +49,12 @@ describe("Check Registration flow", () => {
             nameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
             nameInput().clear();
         });
+
+        it("should show error when enter invalid symbol", ()=>{
+            nameInput().type("Tom@#").blur();
+            cy.contains("Name is invalid").should("be.visible");
+            nameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+            nameInput().clear();
+        });
     });
 });
