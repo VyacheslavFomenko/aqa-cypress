@@ -64,4 +64,53 @@ describe("Check Registration flow", () => {
             nameInput().clear();
         });
     });
+    context("Last name field validation", ()=>{
+        const lastNameInput = () => cy.get("#signupLastName");
+
+        it("should show error when empty", () => {
+            lastNameInput().focus().blur();
+            cy.contains("Last name required").should("be.visible");
+            lastNameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+        });
+
+        it("should show error when less than 2 characters long", () => {
+            lastNameInput().type("A").blur();
+            cy.contains("Last name has to be from 2 to 20 characters long").should("be.visible");
+            lastNameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+            lastNameInput().clear();
+        });
+
+        it("shouldn't show error when 2 symbols", () => {
+            lastNameInput().type("Aa").blur();
+            cy.contains("Last name has to be from 2 to 20 characters long").should("not.exist");
+            lastNameInput().clear();
+        });
+
+        it("shouldn't show error when 20 symbols", () => {
+            lastNameInput().type(faker.string.alpha(20)).blur();
+            cy.contains("Last name has to be from 2 to 20 characters long").should("not.exist");
+            lastNameInput().clear();
+        });
+
+        it("should show error when more than 20 characters long", () => {
+            lastNameInput().type(faker.string.alpha(21)).blur();
+            cy.contains("Last name has to be from 2 to 20 characters long").should("be.visible");
+            lastNameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+            lastNameInput().clear();
+        });
+
+        it("should show error when enter invalid symbol", () => {
+            lastNameInput().type("Lobik@#").blur();
+            cy.contains("Last name is invalid").should("be.visible");
+            lastNameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+            lastNameInput().clear();
+        });
+
+        it("shouldn't work with spaces", () => {
+            lastNameInput().type("   Lobik   ").blur();
+            cy.contains("Last name is invalid").should("be.visible");
+            lastNameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+            lastNameInput().clear();
+        });
+    });
 });
