@@ -124,8 +124,8 @@ describe("Check Registration flow", () => {
         });
 
         it("should show error when incorrect email", () => {
-            emailInput().focus().blur();
-            cy.contains("Email required").should("be.visible");
+            emailInput().type(`${faker.string.alpha(8)} + @gg`).focus().blur();
+            cy.contains("Email is incorrect").should("be.visible");
             emailInput().should("have.css", "border-color", "rgb(220, 53, 69)");
         });
 
