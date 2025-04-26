@@ -10,4 +10,8 @@ describe("Check Registration flow", () => {
         });
         cy.get(".hero-descriptor_btn.btn.btn-primary").click();
     });
+
+    it("should have Registration title", () => {
+        cy.contains("Registration").should("be.visible");
+    });
 });
