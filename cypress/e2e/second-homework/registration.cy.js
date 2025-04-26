@@ -31,13 +31,13 @@ describe("Check Registration flow", () => {
             nameInput().clear();
         });
 
-        it("shouldn't show error when 2 symbols", ()=>{
+        it("shouldn't show error when 2 symbols", () => {
             nameInput().type("Aa").blur();
             cy.contains("Name has to be from 2 to 20 characters long").should("not.exist");
             nameInput().clear();
         });
 
-        it("shouldn't show error when 20 symbols", ()=>{
+        it("shouldn't show error when 20 symbols", () => {
             nameInput().type(faker.string.alpha(20)).blur();
             cy.contains("Name has to be from 2 to 20 characters long").should("not.exist");
             nameInput().clear();
@@ -50,8 +50,15 @@ describe("Check Registration flow", () => {
             nameInput().clear();
         });
 
-        it("should show error when enter invalid symbol", ()=>{
+        it("should show error when enter invalid symbol", () => {
             nameInput().type("Tom@#").blur();
+            cy.contains("Name is invalid").should("be.visible");
+            nameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+            nameInput().clear();
+        });
+
+        it("shouldn't work with spaces", () => {
+            nameInput().type("   Tom   ").blur();
             cy.contains("Name is invalid").should("be.visible");
             nameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
             nameInput().clear();
