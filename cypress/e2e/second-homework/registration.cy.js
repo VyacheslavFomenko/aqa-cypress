@@ -28,6 +28,13 @@ describe("Check Registration flow", () => {
             nameInput().type("A").blur();
             cy.contains("Name has to be from 2 to 20 characters long").should("be.visible");
             nameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+            nameInput().clear();
+        });
+
+        it("shouldn't show error when 2 symbols", ()=>{
+            nameInput().type("Aa").blur();
+            cy.contains("Name has to be from 2 to 20 characters long").should("not.exist");
+            nameInput().clear();
         });
     });
 });
