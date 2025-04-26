@@ -42,5 +42,12 @@ describe("Check Registration flow", () => {
             cy.contains("Name has to be from 2 to 20 characters long").should("not.exist");
             nameInput().clear();
         });
+
+        it("should show error when more than 20 characters long", () => {
+            nameInput().type(faker.string.alpha(21)).blur();
+            cy.contains("Name has to be from 2 to 20 characters long").should("be.visible");
+            nameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+            nameInput().clear();
+        });
     });
 });
