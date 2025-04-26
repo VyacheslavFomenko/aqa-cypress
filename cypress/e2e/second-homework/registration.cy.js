@@ -14,4 +14,14 @@ describe("Check Registration flow", () => {
     it("should have Registration title", () => {
         cy.contains("Registration").should("be.visible");
     });
+
+    context("Name field validation", ()=>{
+        const nameInput = () => cy.get("#signupName");
+
+        it("show error when empty", ()=>{
+            nameInput().focus().blur();
+            cy.contains("Name required").should("be.visible");
+            nameInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+        });
+    });
 });
