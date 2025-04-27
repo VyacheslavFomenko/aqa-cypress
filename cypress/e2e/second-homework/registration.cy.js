@@ -154,11 +154,47 @@ describe("Check Registration flow", () => {
                     .should('be.visible');
             });
         });
-        it("should accepts valid password", ()=>{
+        it("should accepts valid password", () => {
             const validPwd = faker.internet.password(12, false, /[A-Za-z0-9]/);
             passwordInput().clear().type(validPwd).blur();
             cy.contains(pwdError).should('not.exist');
             passwordInput().should('have.value', validPwd);
+        });
+    });
+
+    context("Re-enter password field validation", () => {
+        const passwordInput = () => cy.get("#signupPassword");
+        const confirmedPasswordInput = () => cy.get("#signupRepeatPassword");
+        const pwdError = "Password has to be from 8 to 15 characters long and contain at least one integer, one capital, and one small letter";
+
+        it("should show error on empty password", () => {
+            confirmedPasswordInput().focus().blur();
+            cy.contains("Re-enter password required").should("be.visible");
+            confirmedPasswordInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+        });
+
+        ["Abc1", "A1bcdefghijklmnop", "Password", "password1", "PASSWORD1"].forEach(val => {
+            it(`shows error for invalid re-enter password: ${val}`, () => {
+                confirmedPasswordInput().clear().type(val).blur();
+                cy.contains(pwdError)
+                    .should('be.visible');
+            });
+        });
+
+        it("should show error when confirm password is wrong", () => {
+            const pwd1 = "KC!qksK!b4gwJXq";
+            const pwd2 = faker.internet.password(12, false, /[A-Za-z0-9]/);
+            passwordInput().clear().type(pwd1).blur();
+            confirmedPasswordInput().clear().type(pwd2).blur();
+            cy.contains("Passwords do not match").should("be.visible");
+            confirmedPasswordInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+        });
+
+        it("shouldn't show error when confirm password is right", () => {
+            const pwd = "KC!qksK!b4gwJXq";
+            passwordInput().clear().type(pwd).blur();
+            confirmedPasswordInput().clear().type(pwd).blur();
+            cy.contains(pwdError).should("not.exist");
         });
     });
 });
