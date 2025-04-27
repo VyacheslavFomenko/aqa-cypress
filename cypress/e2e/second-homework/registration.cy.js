@@ -64,7 +64,7 @@ describe("Check Registration flow", () => {
             nameInput().clear();
         });
     });
-    context("Last name field validation", ()=>{
+    context("Last name field validation", () => {
         const lastNameInput = () => cy.get("#signupLastName");
 
         it("should show error when empty", () => {
@@ -114,7 +114,7 @@ describe("Check Registration flow", () => {
         });
     });
 
-    context("Email field validation", ()=>{
+    context("Email field validation", () => {
         const emailInput = () => cy.get("#signupEmail");
 
         it("should show error when empty email", () => {
@@ -124,16 +124,41 @@ describe("Check Registration flow", () => {
         });
 
         it("should show error when incorrect email", () => {
-            emailInput().type(`${faker.string.alpha(8)} + @gg`).focus().blur();
+            emailInput().type(`${faker.string.alpha(8)} + @gg`).blur();
             cy.contains("Email is incorrect").should("be.visible");
             emailInput().should("have.css", "border-color", "rgb(220, 53, 69)");
             emailInput().clear();
         });
 
         it("shouldn't show error when correct email", () => {
-            emailInput().type(`${faker.string.alpha(8)} + @gmail.com`).focus().blur();
+            emailInput().type(`playfog@gmail.com`).blur();
             cy.contains("Email is incorrect").should("not.exist");
             emailInput().clear();
+        });
+    });
+
+    context("Password field validation", () => {
+        const passwordInput = () => cy.get("#signupPassword");
+        const pwdError = "Password has to be from 8 to 15 characters long and contain at least one integer, one capital, and one small letter";
+
+        it("should show error on empty password", () => {
+            passwordInput().focus().blur();
+            cy.contains("Password required").should("be.visible");
+            passwordInput().should("have.css", "border-color", "rgb(220, 53, 69)");
+        });
+
+        ["Abc1", "A1bcdefghijklmnop", "Password", "password1", "PASSWORD1"].forEach(val => {
+            it(`shows error for invalid password: ${val}`, () => {
+                passwordInput().clear().type(val).blur();
+                cy.contains(pwdError)
+                    .should('be.visible');
+            });
+        });
+        it("should accepts valid password", ()=>{
+            const validPwd = faker.internet.password(12, false, /[A-Za-z0-9]/);
+            passwordInput().clear().type(validPwd).blur();
+            cy.contains(pwdError).should('not.exist');
+            passwordInput().should('have.value', validPwd);
         });
     });
 });
