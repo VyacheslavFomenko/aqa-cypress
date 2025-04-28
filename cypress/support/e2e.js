@@ -16,17 +16,19 @@
 // Import commands.js using ES2015 syntax:
 import "./commands"
 
-Cypress.Commands.overwrite('type', (originalFn, element, text, options = {}) => {
-    const isPassword = element.prop('type') === 'password';
+Cypress.Commands.overwrite("type", (originalFn, element, text, options = {}) => {
+    const isPassword = element.prop("type") === "password";
     if (isPassword) {
         options.log = false;
         return originalFn(element, text, options).then(($el) => {
-            Cypress.log({ name: 'type', message: '********', $el: element });
+            Cypress.log({ name: "type", message: "********", $el: element });
             return $el;
         });
     }
     return originalFn(element, text, options);
 });
+
+
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
