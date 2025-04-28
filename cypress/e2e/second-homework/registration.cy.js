@@ -197,4 +197,42 @@ describe("Check Registration flow", () => {
             cy.contains(pwdError).should("not.exist");
         });
     });
+
+    context("Register button state", ()=> {
+        const nameInput = () => cy.get("#signupName");
+        const lastNameInput = () => cy.get("#signupLastName");
+        const emailInput = () => cy.get("#signupEmail");
+        const passwordInput = () => cy.get("#signupPassword");
+        const confirmedPasswordInput = () => cy.get("#signupRepeatPassword");
+        const registerBtn = () => cy.get(".btn.btn-primary");
+
+        const pwd = faker.internet.password(12, false, /[A-Za-z0-9]/);
+
+        it("should enable when all inputs fulfilled", () => {
+            nameInput().clear().type(faker.string.alpha(5));
+            lastNameInput().clear().type(faker.string.alpha(5));
+            emailInput().clear().type(faker.internet.email());
+            passwordInput().clear().type(pwd);
+            confirmedPasswordInput().clear().type(pwd);
+
+            registerBtn().should("not.be.disabled");
+        });
+
+        it("should register user with valid data", ()=>{
+            const name = faker.string.alpha(5);
+            const lastName = faker.string.alpha(5);
+            const email = faker.internet.email();
+            const password = faker.internet.password(12, false, /[A-Za-z0-9]/);
+
+            nameInput().clear().type(name);
+            lastNameInput().clear().type(lastName);
+            emailInput().clear().type(email);
+            passwordInput().clear().type(password);
+            confirmedPasswordInput().clear().type(password);
+
+            cy.contains('Register').click();
+
+            cy.writeFile("cypress/fixtures/registeredUser.json", { name, lastName, email, password })
+        });
+    });
 });
