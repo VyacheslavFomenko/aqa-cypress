@@ -28,7 +28,20 @@ Cypress.Commands.overwrite("type", (originalFn, element, text, options = {}) => 
     return originalFn(element, text, options);
 });
 
+Cypress.Commands.add("login", ({email, password})=>{
+    cy.visit("https://qauto.forstudy.space/", {
+        auth: {
+            username: "guest",
+            password: "welcome2qauto"
+        }
+    });
+    cy.get(".btn.btn-outline-white.header_signin").click();
 
+    cy.get("#signinEmail").type(email);
+    cy.get("#signinPassword").type(password);
+
+    cy.contains('Login').click();
+});
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
