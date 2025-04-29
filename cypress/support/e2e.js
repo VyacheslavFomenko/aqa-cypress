@@ -14,7 +14,34 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import "./commands"
+
+Cypress.Commands.overwrite("type", (originalFn, element, text, options = {}) => {
+    const isPassword = element.prop("type") === "password";
+    if (isPassword) {
+        options.log = false;
+        return originalFn(element, text, options).then(($el) => {
+            Cypress.log({ name: "type", message: "********", $el: element });
+            return $el;
+        });
+    }
+    return originalFn(element, text, options);
+});
+
+Cypress.Commands.add("login", ({email, password})=>{
+    cy.visit("https://qauto.forstudy.space/", {
+        auth: {
+            username: "guest",
+            password: "welcome2qauto"
+        }
+    });
+    cy.get(".btn.btn-outline-white.header_signin").click();
+
+    cy.get("#signinEmail").type(email);
+    cy.get("#signinPassword").type(password);
+
+    cy.contains('Login').click();
+});
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
