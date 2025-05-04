@@ -6,5 +6,9 @@
   },
   "dependencies": {
     "@faker-js/faker": "^9.7.0"
+  },
+  "scripts": {
+    "test:qauto": "npx cypress run --config-file=config/qauto.config.js",
+    "test:qauto2": "npx cypress run --config-file=config/qauto2.config.js"
   }
 }
