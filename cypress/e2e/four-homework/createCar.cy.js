@@ -24,4 +24,20 @@ describe("Create Car and catch it's id", () => {
             cy.writeFile("cypress/fixtures/createdCar.json", {id: carId});
         });
     });
+
+    it("should check if created car exist", () => {
+        cy.fixture("createCar.json").then(({id}) => {
+            cy.request({
+                method: "GET",
+                url: "/api/cars",
+            }).then((res)=>{
+                expect(res.status).to.eq(200);
+                const car = res.body.data.id.find(car => car.id === id);
+                expect(car).to.exist;
+                expect(car.brand).to.eq("Audi");
+                expect(car.model).to.eq("A6");
+                expect(car.mileage).to.eq(100);
+            });
+        });
+    });
 });
