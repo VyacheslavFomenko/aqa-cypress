@@ -21,14 +21,14 @@ Cypress.Commands.overwrite("type", (originalFn, element, text, options = {}) => 
     if (isPassword) {
         options.log = false;
         return originalFn(element, text, options).then(($el) => {
-            Cypress.log({ name: "type", message: "********", $el: element });
+            Cypress.log({name: "type", message: "********", $el: element});
             return $el;
         });
     }
     return originalFn(element, text, options);
 });
 
-Cypress.Commands.add("login", ({email, password})=>{
+Cypress.Commands.add("login", ({email, password}) => {
     cy.visit("https://qauto.forstudy.space/", {
         auth: {
             username: "guest",
@@ -43,5 +43,30 @@ Cypress.Commands.add("login", ({email, password})=>{
     cy.contains('Login').click();
 });
 
+Cypress.Commands.add("register", ({url, name, lastName, email, password}) => {
+    cy.visit(url, {
+        auth: {
+            username: "guest",
+            password: "welcome2qauto"
+        }
+    });
+    cy.get(".hero-descriptor_btn.btn.btn-primary").click();
+
+    const nameInput = () => cy.get("#signupName");
+    const lastNameInput = () => cy.get("#signupLastName");
+    const emailInput = () => cy.get("#signupEmail");
+    const passwordInput = () => cy.get("#signupPassword");
+    const confirmedPasswordInput = () => cy.get("#signupRepeatPassword");
+
+    nameInput().clear().type(name);
+    lastNameInput().clear().type(lastName);
+    emailInput().clear().type(email);
+    passwordInput().clear().type(password);
+    confirmedPasswordInput().clear().type(password);
+
+    cy.contains('Register').click();
+
+    cy.writeFile(`qauto${Math.random(10)}.config.js`, { baseurl: url, user: {name, lastName, email, password }});
+});
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
