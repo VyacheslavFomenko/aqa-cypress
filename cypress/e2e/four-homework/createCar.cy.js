@@ -40,4 +40,30 @@ describe("Create Car and catch it's id", () => {
             });
         });
     });
+
+    it("Creates expense for car via API", ()=>{
+        cy.fixture('createdCar.json').then(({ id }) => {
+            const expenseData = {
+                mileage: 100,
+                liters: 10,
+                totalCost: 1000,
+            }
+            cy.createExpense(id, expenseData);
+        });
+
+        cy.writeFile('cypress/fixtures/createdExpense.json', expenseData);
+    });
+
+    it("Validates expense in UI", () => {
+        cy.fixture("createdExpense.json").then((exp) => {
+            cy.visit("https://qauto.forstudy.space/panel/expenses");
+            cy.get("#carSelectDropdown").select('Audi A6')
+
+            cy.get(".table.expenses_table").within(() => {
+                cy.contains(exp.mileage);
+                cy.contains(exp.liters);
+                cy.contains(exp.totalCost);
+            });
+        });
+    });
 });
