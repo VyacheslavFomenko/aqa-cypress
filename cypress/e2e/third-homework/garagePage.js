@@ -1,25 +1,25 @@
 class GaragePage {
     get addCarButton() {
-        return cy.get(".btn.btn-primary");
+        return cy.contains("button",/^Add car$/);
     }
 
-    get brandCarInput(){
+    get brandCarInput() {
         return cy.get("#addCarBrand");
     }
 
-    get modelCarInput(){
+    get modelCarInput() {
         return cy.get("#addCarModel");
     }
 
-    get mileageCarInput(){
+    get mileageCarInput() {
         return cy.get("#addCarMileage");
     }
 
-    get saveCarButton(){
-        return cy.get(".btn.btn-primary");
+    get saveCarButton() {
+        return cy.contains("button", /^Add$/);
     }
 
-    addCar(mileage){
+    addCar(mileage) {
         this.addCarButton.click();
         this.brandCarInput.select("Audi");
         this.modelCarInput.select("A6");

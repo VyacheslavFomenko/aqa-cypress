@@ -68,5 +68,23 @@ Cypress.Commands.add("register", ({url, name, lastName, email, password}) => {
 
     cy.writeFile(`qauto${Math.random(10)}.config.js`, { baseurl: url, user: {name, lastName, email, password }});
 });
+
+
+Cypress.Commands.add("createExpense", (carId, expenseData ) => {
+    cy.request({
+        method: "POST",
+        url: "/api/expenses",
+        body: {
+            carId,
+            ...expenseData
+        }
+    }).then((res) => {
+        expect(res.status).to.eq(201);
+        expect(res.body.data.id).to.eq(carId);
+        expect(res.body.data.mileage).to.eq(expenseData.mileage);
+        expect(res.body.data.liters).to.eq(expenseData.liters);
+        expect(res.body.data.totalCost).to.eq(expenseData.totalCost);
+    });
+});
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
