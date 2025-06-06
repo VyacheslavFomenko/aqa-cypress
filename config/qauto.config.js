@@ -1,9 +1,9 @@
 module.exports = {
-  baseUrl: 'https://qauto.forstudy.space/',
+  baseUrl: "https://qauto.forstudy.space/",
   user: {
     "name": "Tom",
     "lastName": "Ball",
-    "email": "qwerty@gmail.com",
-    "password": "nBZCa8!ST5WfBHC"
+    "email": "playfog3@gmail.com",
+    "password": "IgB1R6yFput1WTR"
   }
 }
